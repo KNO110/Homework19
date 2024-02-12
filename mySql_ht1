@@ -1,0 +1,23 @@
+-- 1) показать названия товаров и их производителей, но и в том числе тех производителей, у которых нет товаров (OUTER JOIN)
+SELECT Products.name, Producer.producer_name
+FROM Products
+LEFT JOIN Producer ON Products.producer_id = Producer.producer_id;
+-- 2) показать только те категории, к которым не относится ни один товар (OUTER JOIN)
+SELECT Categories.CategoryName
+FROM Categories
+LEFT JOIN Products ON Categories.CategoryId = Products.categories_id
+WHERE Products.categories_id IS NULL;
+-- 3) показать области (регионы), в которых нет ни одного производителя (ЕХСЕРТ)
+SELECT Regions.Name
+FROM Regions
+LEFT JOIN Products ON Regions.id = Products.region_id
+WHERE Products.region_id IS NULL;
+-- 4) показать те названия категорий, где нет товаров фирмы ООО «Нли Ю» (ЕХСЕРТ)
+SELECT Categories.CategoryName
+FROM Categories
+EXCEPT
+SELECT Categories.CategoryName
+FROM Categories
+INNER JOIN Products ON Categories.CategoryID = Products.categories_id
+INNER JOIN Producer ON Products.producer_id = Producer.producer_id
+WHERE Producer.producer_name = 'ООО «Нли Ю»';
